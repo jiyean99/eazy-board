@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 목록</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+<div th:replace="common/header :: headerFragment"></div>
+
+<div class="container">
+    <div class="my-4 d-flex justify-content-between align-items-center">
+        <h3 class="my-0">게시글 목록</h3>
+        <a href="/post/create" class="btn btn-dark ms-auto">새 글 작성</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover mt-4 align-middle">
+            <colgroup>
+                <col style="width: 90px;">
+                <col>
+                <col style="min-width: 120px;">
+                <col style="width: 120px;">
+            </colgroup>
+
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>상세</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="post : ${postList.content}">
+                <td th:text="${post.id}"></td>
+                <td th:text="${post.title}"></td>
+                <td th:text="${post.authorEmail}"></td>
+
+                <td>
+                    <a class="btn btn-sm btn-outline-primary"
+                       th:href="@{/post/{id}(id=${post.id})}">
+                        상세보기
+                    </a>
+                </td>
+            </tr>
+
+            <tr th:if="${postList.totalElements == 0}">
+                <td colspan="4" class="text-center text-muted py-4">게시글이 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <ul class="pagination justify-content-center" th:if="${postList.totalPages > 0}">
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0,postList.totalPages-1)}">
+                <a class="page-link" th:href="@{/posts/(page=${pageNum})}" th:text="${pageNum+1}"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
