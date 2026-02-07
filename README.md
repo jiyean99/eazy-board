@@ -86,10 +86,10 @@ spring:
 - 프로젝트 소개/기능 요약 + 주요 CTA(게시글 목록/새 글 작성)
 - 로그인 상태에 따라 헤더 메뉴가 분기됨
 
-**로그인 전(일반 사용자)**
+**로그인 전(일반 사용자)**<br/>
 ![Home - Common User](assets/home_common_user_login.png)
 
-**로그인 후(ADMIN)**
+**로그인 후(ADMIN)**<br/>
 ![Home - Admin User](assets/home_admin_user_login.png)
 
 ---
@@ -97,13 +97,13 @@ spring:
 ### Posts (게시글)
 - 게시글 CRUD 흐름: 목록 → 상세 → 작성
 
-**게시글 목록 (페이징)**
+**게시글 목록 (페이징)**<br/>
 ![Post List](assets/post_list.png)
 
-**게시글 상세**
+**게시글 상세**<br/>
 ![Post Detail](assets/post_detail.png)
 
-**게시글 작성**
+**게시글 작성**<br/>
 ![Post Register](assets/post_register.png)
 
 ---
@@ -112,16 +112,16 @@ spring:
 - ADMIN 권한에서 회원 목록/상세 확인 가능
 - 회원가입/로그인 화면 제공
 
-**회원 목록**
+**회원 목록**<br/>
 ![Author List](assets/author_list.png)
 
-**회원 상세**
+**회원 상세**<br/>
 ![Author Detail](assets/author_detail.png)
 
-**회원 가입**
+**회원 가입**<br/>
 ![Author Register](assets/author_register.png)
 
-**로그인**
+**로그인**<br/>
 ![Author Login](assets/author_login.png)
 
 ## Troubleshooting / Learned
