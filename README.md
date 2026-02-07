@@ -124,7 +124,6 @@ spring:
 **로그인**
 ![Author Login](assets/author_login.png)
 
-
 ## Troubleshooting / Learned
 
 ### 1) `author_id` NOT NULL 제약 오류
