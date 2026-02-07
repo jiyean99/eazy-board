@@ -1,48 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 상세조회</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body { background: #f8f9fa; }
+        .card-shadow { box-shadow: 0 10px 30px rgba(0,0,0,.06); }
+        .meta { color: #6c757d; }
+        .content-box {
+          white-space: pre-wrap;  /* 줄바꿈/공백 유지 */
+          word-break: break-word; /* 긴 텍스트 줄바꿈 */
+          background: #fff;
+          border: 1px solid rgba(0,0,0,.1);
+          border-radius: .5rem;
+          padding: 1rem;
+        }
+        .label-col { width: 150px; }
+    </style>
 </head>
 
 <body>
 <div th:replace="common/header :: headerFragment"></div>
 
-<div class="container">
-    <div class="my-4 d-flex justify-content-between align-items-center">
-        <h3 class="my-0">게시글 상세조회</h3>
+<main class="container py-4 py-md-5">
+    <!-- 상단 헤더 -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-2 mb-3">
+        <div>
+            <h1 class="h4 mb-1">게시글 상세</h1>
+            <div class="meta small">
+                <span class="me-2">ID: <span th:text="${postDetail.id}">0</span></span>
+                <span class="me-2">작성자: <span class="font-monospace" th:text="${postDetail.authorEmail}">author@email.com</span></span>
+            </div>
+        </div>
+
+        <!-- 기능 추가 아님: 이동 링크 -->
+        <div class="d-flex gap-2">
+            <a href="/posts" class="btn btn-outline-secondary btn-sm">목록으로</a>
+        </div>
     </div>
 
-    <section class="mb-4">
-        <table class="table mt-4">
-            <colgroup>
-                <col style="width: 20%;">
-                <col>
-            </colgroup>
+    <!-- 본문 카드 -->
+    <div class="card border-0 card-shadow">
+        <div class="card-body p-3 p-md-4 p-lg-5">
 
-            <tbody>
-            <tr>
-                <th class="table-light" style="width:150px;">ID</th>
-                <td th:text="${postDetail.id}"></td>
-            </tr>
-            <tr>
-                <th class="table-light" style="width:150px;">글쓴이 이메일</th>
-                <td th:text="${postDetail.authorEmail}"></td>
-            </tr>
-            <tr>
-                <th class="table-light" style="width:150px;">제목</th>
-                <td th:text="${postDetail.title}"></td>
-            </tr>
-            <tr>
-                <th class="table-light" style="width:150px;">내용</th>
-                <td th:text="${postDetail.contents}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+            <!-- 제목 -->
+            <div class="mb-4">
+                <div class="text-muted small mb-1">제목</div>
+                <div class="h5 mb-0" th:text="${postDetail.title}">제목</div>
+            </div>
 
-</div>
+            <!-- 내용 -->
+            <div>
+                <div class="text-muted small mb-2">내용</div>
+                <div class="content-box" th:text="${postDetail.contents}">
+                    내용
+                </div>
+            </div>
+
+            <!-- 표 형태가 꼭 필요하면 아래처럼 “요약 정보 테이블”로 축소해서 둘 수도 있음 -->
+            <hr class="my-4">
+            <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                    <tbody>
+                    <tr>
+                        <th class="text-muted label-col">ID</th>
+                        <td th:text="${postDetail.id}"></td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">글쓴이 이메일</th>
+                        <td class="font-monospace" th:text="${postDetail.authorEmail}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</main>
+
 </body>
 </html>

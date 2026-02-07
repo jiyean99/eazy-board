@@ -1,67 +1,133 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 목록</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body { background: #f8f9fa; }
+        .card-shadow { box-shadow: 0 10px 30px rgba(0,0,0,.06); }
+        .table td, .table th { vertical-align: middle; }
+        .muted-id { color: #6c757d; }
+        .title-link { color: inherit; text-decoration: none; }
+        .title-link:hover { text-decoration: underline; }
+    </style>
 </head>
 
 <body>
 <div th:replace="common/header :: headerFragment"></div>
 
-<div class="container">
-    <div class="my-4 d-flex justify-content-between align-items-center">
-        <h3 class="my-0">게시글 목록</h3>
-        <a href="/post/create" class="btn btn-dark ms-auto">새 글 작성</a>
+<main class="container py-4 py-md-5">
+    <!-- 상단 툴바 -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+        <div>
+            <h1 class="h4 mb-1">게시글 목록</h1>
+            <p class="text-muted mb-0">
+                총 <span th:text="${postList.totalElements}">0</span>개의 게시글
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a href="/post/create" class="btn btn-dark">
+                새 글 작성
+            </a>
+        </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-hover mt-4 align-middle">
-            <colgroup>
-                <col style="width: 90px;">
-                <col>
-                <col style="min-width: 120px;">
-                <col style="width: 120px;">
-            </colgroup>
+    <!-- 테이블 카드 -->
+    <div class="card border-0 card-shadow">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <colgroup>
+                        <col style="width: 90px;">
+                        <col>
+                        <col style="min-width: 160px;">
+                        <col style="width: 120px;">
+                    </colgroup>
 
-            <thead class="table-light">
-            <tr>
-                <th>ID</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>상세</th>
-            </tr>
-            </thead>
+                    <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th class="text-end">상세</th>
+                    </tr>
+                    </thead>
 
-            <tbody>
-            <tr th:each="post : ${postList.content}">
-                <td th:text="${post.id}"></td>
-                <td th:text="${post.title}"></td>
-                <td th:text="${post.authorEmail}"></td>
+                    <tbody>
+                    <!-- 빈 상태 -->
+                    <tr th:if="${postList.totalElements == 0}">
+                        <td colspan="4" class="text-center text-muted py-5">
+                            게시글이 없습니다.
+                        </td>
+                    </tr>
 
-                <td>
-                    <a class="btn btn-sm btn-outline-primary"
-                       th:href="@{/post/{id}(id=${post.id})}">
-                        상세보기
-                    </a>
-                </td>
-            </tr>
+                    <tr th:each="post : ${postList.content}">
+                        <td class="muted-id" th:text="${post.id}"></td>
 
-            <tr th:if="${postList.totalElements == 0}">
-                <td colspan="4" class="text-center text-muted py-4">게시글이 없습니다.</td>
-            </tr>
-            </tbody>
-        </table>
+                        <td>
+                            <!-- 제목을 링크처럼 보이게(기능은 동일: 상세로 이동) -->
+                            <a class="title-link fw-semibold"
+                               th:href="@{/post/{id}(id=${post.id})}"
+                               th:text="${post.title}">
+                                제목
+                            </a>
+                        </td>
 
+                        <td>
+                            <span class="font-monospace small" th:text="${post.authorEmail}">author@email.com</span>
+                        </td>
 
-        <ul class="pagination justify-content-center" th:if="${postList.totalPages > 0}">
-            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0,postList.totalPages-1)}">
-                <a class="page-link" th:href="@{/posts/(page=${pageNum})}" th:text="${pageNum+1}"></a>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary"
+                               th:href="@{/post/{id}(id=${post.id})}">
+                                상세보기
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 페이징 -->
+    <nav class="mt-4" th:if="${postList.totalPages > 1}">
+        <ul class="pagination justify-content-center mb-0">
+
+            <!-- 이전 페이지 -->
+            <li class="page-item" th:classappend="${postList.first} ? ' disabled' : ''">
+                <a class="page-link"
+                   th:href="@{/posts(page=${postList.number - 1})}"
+                   tabindex="-1" aria-disabled="true">
+                    이전
+                </a>
             </li>
+
+            <!-- 페이지 번호 -->
+            <li class="page-item"
+                th:each="pageNum : ${#numbers.sequence(0, postList.totalPages - 1)}"
+                th:classappend="${pageNum == postList.number} ? ' active' : ''">
+                <a class="page-link"
+                   th:href="@{/posts(page=${pageNum})}"
+                   th:text="${pageNum + 1}">
+                </a>
+            </li>
+
+            <!-- 다음 페이지 -->
+            <li class="page-item" th:classappend="${postList.last} ? ' disabled' : ''">
+                <a class="page-link"
+                   th:href="@{/posts(page=${postList.number + 1})}">
+                    다음
+                </a>
+            </li>
+
         </ul>
-    </div>
-</div>
+    </nav>
+</main>
 
 </body>
 </html>
