@@ -9,7 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-@Transactional
+@Transactional  // Transactional 어노테이션 + Test = DB자동 롤백처리
+//@DataJpaTest  // jpa관련된 의존성들만 사용. 주로 repository테스트에사용
 public class AuthorRepositoryTest {
     private final AuthorRepository authorRepository;
 

@@ -2,6 +2,7 @@ package com.beyond.basic.author.dto;
 
 import com.beyond.basic.author.domain.Author;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AuthorCreateDto {
     @NotBlank(message = "이름을 작성하시오.")
     private String name;
